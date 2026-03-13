@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AstroVein Resources Inc. — Space Asteroid Mining | Lakeland, FL</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --void: #020509;
+    --deep: #050d1a;
+    --navy: #0a1628;
+    --cobalt: #0d2847;
+    --gold: #c8962a;
+    --gold-light: #e8b84b;
+    --gold-pale: #f5d68a;
+    --cyan: #00d4ff;
+    --white: #f0f4ff;
+    --gray: #8899bb;
+    --dim: #445577;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { background:var(--void); color:var(--white); font-family:'Exo 2',sans-serif; overflow-x:hidden; cursor:none; }
+  .cursor { position:fixed; width:8px; height:8px; background:var(--gold); border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition:transform 0.1s; }
+  .cursor-ring { position:fixed; width:30px; height:30px; border:1px solid var(--gold-light); border-radius:50%; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); transition:all 0.15s ease; opacity:0.6; }
+  #starfield { position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; pointer-events:none; }
+  nav { position:fixed; top:0; width:100%; z-index:100; padding:20px 60px; display:flex; align-items:center; justify-content:space-between; background:linear-gradient(to bottom,rgba(2,5,9,0.97),transparent); }
+  .nav-logo { font-family:'Orbitron',monospace; font-size:1.1rem; font-weight:900; letter-spacing:3px; color:var(--gold); text-decoration:none; }
+  .nav-logo span { color:var(--cyan); }
+  .nav-links { display:flex; gap:32px; list-style:none; }
+  .nav-links a { font-family:'Space Mono',monospace; font-size:0.65rem; letter-spacing:2px; color:var(--gray); text-decoration:none; text-transform:uppercase; transition:color 0.3s; }
+  .nav-links a:hover { color:var(--gold); }
+  .nav-cta { font-family:'Space Mono',monospace; font-size:0.62rem; letter-spacing:2px; text-transform:uppercase; padding:10px 22px; border:1px solid var(--gold); color:var(--gold); text-decoration:none; transition:all 0.3s; }
+  .nav-cta:hover { background:var(--gold); color:var(--void); }
+  .hero { position:relative; min-height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:flex-start; padding:0 10vw; z-index:1; overflow:hidden; }
+  .hero-planet { position:absolute; right:-5vw; top:50%; transform:translateY(-50%); width:52vw; height:52vw; max-width:780px; max-height:780px; border-radius:50%; background:radial-gradient(circle at 35% 35%, #3a2a0a 0%, #1a1208 30%, #0a0808 60%, #020204 100%); box-shadow:inset -40px -40px 80px rgba(200,150,42,0.15), 0 0 120px rgba(200,150,42,0.07), 0 0 300px rgba(0,212,255,0.04); animation:spinPlanet 120s linear infinite; opacity:0.65; }
+  @keyframes spinPlanet { from{transform:translateY(-50%) rotate(0deg)} to{transform:translateY(-50%) rotate(360deg)} }
+  .hero-ring { position:absolute; right:0; top:50%; transform:translateY(-50%) rotateX(75deg); width:60vw; height:60vw; max-width:860px; max-height:860px; border-radius:50%; border:2px solid rgba(200,150,42,0.18); animation:ringPulse 8s ease-in-out infinite; }
+  @keyframes ringPulse { 0%,100%{opacity:0.25} 50%{opacity:0.6} }
+  .hero-tag { font-family:'Space Mono',monospace; font-size:0.62rem; letter-spacing:4px; text-transform:uppercase; color:var(--cyan); margin-bottom:22px; display:flex; align-items:center; gap:12px; }
+  .hero-tag::before { content:''; width:36px; height:1px; background:var(--cyan); }
+  .hero-title { font-family:'Orbitron',monospace; font-size:clamp(2.6rem,5.5vw,5.5rem); font-weight:900; line-height:1.05; margin-bottom:8px; }
+  .hero-title .l1 { color:var(--white); }
+  .hero-title .l2 { color:transparent; -webkit-text-stroke:1px var(--gold); }
+  .hero-title .l3 { color:var(--gold); }
+  .hero-sub { font-size:1rem; color:var(--gray); max-width:460px; line-height:1.75; margin:26px 0 20px; font-weight:300; }
+  .hero-loc { font-family:'Space Mono',monospace; font-size:0.6rem; letter-spacing:3px; color:var(--dim); text-transform:uppercase; margin-bottom:36px; }
+  .hero-loc span { color:var(--gold-light); }
+  .hero-btns { display:flex; gap:16px; flex-wrap:wrap; }
+  .btn-p { font-family:'Space Mono',monospace; font-size:0.68rem; letter-spacing:2px; text-transform:uppercase; padding:15px 34px; background:var(--gold); color:var(--void); text-decoration:none; font-weight:700; transition:all 0.3s; }
+  .btn-p:hover { background:var(--gold-light); transform:translateY(-2px); }
+  .btn-s { font-family:'Space Mono',monospace; font-size:0.68rem; letter-spacing:2px; text-transform:uppercase; padding:15px 34px; border:1px solid var(--dim); color:var(--gray); text-decoration:none; transition:all 0.3s; }
+  .btn-s:hover { border-color:var(--cyan); color:var(--cyan); }
+  .ticker { position:relative; z-index:1; background:rgba(10,22,40,0.85); border-top:1px solid rgba(200,150,42,0.2); border-bottom:1px solid rgba(200,150,42,0.2); padding:11px 0; overflow:hidden; }
+  .ticker-inner { display:flex; gap:70px; animation:tickerScroll 35s linear infinite; white-space:nowrap; }
+  @keyframes tickerScroll { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+  .t-item { font-family:'Space Mono',monospace; font-size:0.62rem; letter-spacing:2px; text-transform:uppercase; color:var(--gray); display:flex; align-items:center; gap:10px; }
+  .t-item .sym { color:var(--gold); font-weight:700; }
+  .t-item .up { color:#4ade80; }
+  .t-item .lbl { color:var(--dim); font-size:0.52rem; }
+  section { position:relative; z-index:1; padding:110px 10vw; }
+  .s-tag { font-family:'Space Mono',monospace; font-size:0.58rem; letter-spacing:4px; text-transform:uppercase; color:var(--cyan); margin-bottom:14px; display:flex; align-items:center; gap:10px; }
+  .s-tag::before { content:attr(data-n); color:var(--dim); }
+  .s-title { font-family:'Orbitron',monospace; font-size:clamp(1.7rem,3vw,2.8rem); font-weight:700; color:var(--white); margin-bottom:56px; line-height:1.2; }
+  .s-title em { color:var(--gold); font-style:normal; }
+  .stats-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:rgba(200,150,42,0.12); margin-bottom:80px; }
+  .stat { background:var(--deep); padding:44px 32px; transition:background 0.3s; }
+  .stat:hover { background:var(--navy); }
+  .stat-n { font-family:'Orbitron',monospace; font-size:2.5rem; font-weight:900; color:var(--gold); line-height:1; margin-bottom:8px; }
+  .stat-l { font-family:'Space Mono',monospace; font-size:0.58rem; letter-spacing:2px; text-transform:uppercase; color:var(--gray); }
+  .stat-d { font-size:0.78rem; color:var(--dim); margin-top:8px; line-height:1.4; }
+  .timeline { position:relative; padding-left:56px; }
+  .timeline::before { content:''; position:absolute; left:14px; top:0; bottom:0; width:1px; background:linear-gradient(to bottom,var(--gold),var(--cyan),transparent); }
+  .t-item-c { position:relative; margin-bottom:56px; opacity:0; transform:translateX(28px); transition:all 0.6s ease; }
+  .t-item-c.vis { opacity:1; transform:translateX(0); }
+  .t-dot { position:absolute; left:-48px; top:4px; width:14px; height:14px; border-radius:50%; background:var(--void); border:2px solid var(--gold); display:flex; align-items:center; justify-content:center; }
+  .t-dot::after { content:''; width:5px; height:5px; border-radius:50%; background:var(--gold); }
+  .t-phase { font-family:'Space Mono',monospace; font-size:0.52rem; letter-spacing:3px; text-transform:uppercase; color:var(--cyan); margin-bottom:7px; }
+  .t-head { font-family:'Orbitron',monospace; font-size:1rem; font-weight:700; color:var(--white); margin-bottom:10px; }
+  .t-body { font-size:0.88rem; color:var(--gray); line-height:1.7; max-width:580px; }
+  .tech-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; background:rgba(0,212,255,0.04); }
+  .tech-card { background:var(--deep); padding:44px 36px; transition:all 0.4s; border-bottom:2px solid transparent; }
+  .tech-card:hover { background:var(--navy); border-bottom-color:var(--gold); transform:translateY(-4px); }
+  .tech-icon { font-size:2.2rem; margin-bottom:18px; display:block; }
+  .tech-name { font-family:'Orbitron',monospace; font-size:0.82rem; font-weight:700; color:var(--gold); letter-spacing:2px; margin-bottom:14px; text-transform:uppercase; }
+  .tech-desc { font-size:0.83rem; color:var(--gray); line-height:1.7; }
+  .tech-spec { margin-top:18px; padding-top:18px; border-top:1px solid var(--cobalt); font-family:'Space Mono',monospace; font-size:0.55rem; color:var(--cyan); letter-spacing:1px; }
+  .mission-panel { background:var(--deep); border:1px solid rgba(200,150,42,0.18); padding:56px; }
+  .m-grid { display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:start; }
+  .m-info h3 { font-family:'Orbitron',monospace; font-size:1.5rem; color:var(--gold); margin-bottom:18px; }
+  .m-info p { color:var(--gray); line-height:1.8; font-size:0.88rem; margin-bottom:28px; }
+  .prog-wrap { margin-bottom:16px; }
+  .prog-lbl { font-family:'Space Mono',monospace; font-size:0.54rem; letter-spacing:2px; color:var(--dim); text-transform:uppercase; display:flex; justify-content:space-between; margin-bottom:5px; }
+  .prog-bar { height:3px; background:var(--cobalt); }
+  .prog-fill { height:100%; animation:pfill 2s ease-out forwards; }
+  @keyframes pfill { from{width:0} }
+  .data-row { display:flex; justify-content:space-between; align-items:center; padding:11px 0; border-bottom:1px solid var(--cobalt); }
+  .d-lbl { font-family:'Space Mono',monospace; font-size:0.58rem; letter-spacing:2px; text-transform:uppercase; color:var(--dim); }
+  .d-val { font-family:'Space Mono',monospace; font-size:0.76rem; color:var(--cyan); }
+  .team-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; background:rgba(200,150,42,0.07); }
+  .team-card { background:var(--deep); padding:44px 32px; transition:background 0.3s; }
+  .team-card:hover { background:var(--navy); }
+  .t-av { width:68px; height:68px; border-radius:50%; background:linear-gradient(135deg,var(--cobalt),var(--navy)); border:2px solid var(--gold); display:flex; align-items:center; justify-content:center; font-size:1.7rem; margin-bottom:18px; }
+  .t-name { font-family:'Orbitron',monospace; font-size:0.82rem; color:var(--white); margin-bottom:5px; font-weight:700; }
+  .t-role { font-family:'Space Mono',monospace; font-size:0.57rem; color:var(--gold); letter-spacing:2px; text-transform:uppercase; margin-bottom:14px; }
+  .t-bio { font-size:0.8rem; color:var(--gray); line-height:1.6; }
+  .invest-panel { background:linear-gradient(135deg,var(--deep),var(--navy)); border:1px solid rgba(200,150,42,0.14); padding:56px; }
+  .inv-grid { display:grid; grid-template-columns:1fr 1fr; gap:72px; align-items:start; }
+  .raise-amt { font-family:'Orbitron',monospace; font-size:3.6rem; font-weight:900; color:var(--gold); line-height:1; }
+  .raise-lbl { font-family:'Space Mono',monospace; font-size:0.6rem; letter-spacing:3px; color:var(--dim); text-transform:uppercase; margin-top:8px; margin-bottom:26px; }
+  .raise-desc { color:var(--gray); line-height:1.8; font-size:0.88rem; }
+  .inv-addr { font-family:'Space Mono',monospace; font-size:0.58rem; color:var(--dim); letter-spacing:1px; line-height:2; margin-top:20px; }
+  .f-input { background:rgba(255,255,255,0.04); border:1px solid var(--cobalt); padding:13px 18px; color:var(--white); font-family:'Space Mono',monospace; font-size:0.72rem; transition:border-color 0.3s; outline:none; width:100%; display:block; margin-bottom:12px; }
+  .f-input:focus { border-color:var(--gold); }
+  .f-input::placeholder { color:var(--dim); }
+  .f-btn { font-family:'Space Mono',monospace; font-size:0.65rem; letter-spacing:2px; text-transform:uppercase; padding:15px 30px; background:var(--gold); color:var(--void); border:none; cursor:pointer; font-weight:700; transition:all 0.3s; width:100%; }
+  .f-btn:hover { background:var(--gold-light); }
+  footer { background:var(--void); border-top:1px solid rgba(200,150,42,0.13); padding:72px 10vw 36px; position:relative; z-index:1; }
+  .ft-grid { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:56px; margin-bottom:56px; }
+  .ft-logo { font-family:'Orbitron',monospace; font-size:1.2rem; font-weight:900; color:var(--gold); margin-bottom:14px; }
+  .ft-logo span { color:var(--cyan); }
+  .ft-tag { color:var(--dim); font-size:0.82rem; line-height:1.7; max-width:260px; }
+  .ft-addr { margin-top:18px; font-family:'Space Mono',monospace; font-size:0.57rem; color:var(--dim); letter-spacing:1px; line-height:1.9; }
+  .ft-col h4 { font-family:'Space Mono',monospace; font-size:0.57rem; letter-spacing:3px; text-transform:uppercase; color:var(--gold); margin-bottom:18px; }
+  .ft-col ul { list-style:none; }
+  .ft-col li { margin-bottom:9px; }
+  .ft-col a { color:var(--dim); text-decoration:none; font-size:0.83rem; transition:color 0.3s; }
+  .ft-col a:hover { color:var(--gold); }
+  .ft-bot { border-top:1px solid var(--cobalt); padding-top:26px; display:flex; justify-content:space-between; }
+  .ft-copy { font-family:'Space Mono',monospace; font-size:0.57rem; color:var(--dim); letter-spacing:1px; }
+  .divider { width:100%; height:1px; background:linear-gradient(90deg,transparent,var(--cobalt),transparent); position:relative; z-index:1; }
+  .reveal { opacity:0; transform:translateY(36px); transition:all 0.8s ease; }
+  .reveal.vis { opacity:1; transform:translateY(0); }
+  @media(max-width:768px){
+    nav{padding:16px 24px;} .nav-links{display:none;}
+    section{padding:80px 6vw;}
+    .stats-grid{grid-template-columns:1fr 1fr;}
+    .tech-grid,.team-grid,.m-grid,.inv-grid,.ft-grid{grid-template-columns:1fr;}
+    .hero-planet{opacity:0.15;}
+  }
+</style>
+</head>
+<body>
+<div class="cursor" id="cur"></div>
+<div class="cursor-ring" id="curR"></div>
+<canvas id="starfield"></canvas>
+
+<nav>
+  <a class="nav-logo" href="#">ASTRO<span>VEIN</span></a>
+  <ul class="nav-links">
+    <li><a href="#mission">Mission</a></li>
+    <li><a href="#tech">Technology</a></li>
+    <li><a href="#tracker">Tracker</a></li>
+    <li><a href="#team">Team</a></li>
+    <li><a href="#invest">Invest</a></li>
+  </ul>
+  <a href="#invest" class="nav-cta">Investor Portal</a>
+</nav>
+
+<section class="hero" id="home">
+  <div class="hero-planet"></div>
+  <div class="hero-ring"></div>
+  <div class="hero-tag">Est. 2025 — Lakeland, Florida</div>
+  <h1 class="hero-title">
+    <div class="l1">MINING THE</div>
+    <div class="l2">SOLAR SYSTEM</div>
+    <div class="l3">FROM FLORIDA</div>
+  </h1>
+  <p class="hero-sub">AstroVein Resources is unlocking trillions in platinum-group metals, rare earths, and water from near-Earth asteroids and the lunar surface.</p>
+  <div class="hero-loc">HQ: <span>1200 Innovation Way, Lakeland, FL 33801</span></div>
+  <div class="hero-btns">
+    <a href="#mission" class="btn-p">Explore Mission</a>
+    <a href="#invest" class="btn-s">Investor Relations →</a>
+  </div>
+</section>
+
+<div class="ticker">
+  <div class="ticker-inner">
+    <div class="t-item"><span class="sym">PGM</span> Platinum Group Metals <span class="up">+2.4%</span> <span class="lbl">$980/oz</span></div>
+    <div class="t-item"><span class="sym">AERO-1</span> Scout Probe <span class="lbl">DEV PHASE</span></div>
+    <div class="t-item"><span class="sym">Ni-Fe</span> M-Type Asteroid <span class="up">+1.1%</span> <span class="lbl">Class M Target</span></div>
+    <div class="t-item"><span class="sym">MINER-1</span> Extraction Payload <span class="lbl">DESIGN STAGE</span></div>
+    <div class="t-item"><span class="sym">H2O</span> Lunar Water Ice <span class="lbl">HIGH CONFIDENCE</span></div>
+    <div class="t-item"><span class="sym">SEED</span> Funding Round <span class="lbl">OPEN</span> <span class="up">$5M TARGET</span></div>
+    <div class="t-item"><span class="sym">PGM</span> Platinum Group Metals <span class="up">+2.4%</span> <span class="lbl">$980/oz</span></div>
+    <div class="t-item"><span class="sym">AERO-1</span> Scout Probe <span class="lbl">DEV PHASE</span></div>
+    <div class="t-item"><span class="sym">Ni-Fe</span> M-Type Asteroid <span class="up">+1.1%</span> <span class="lbl">Class M Target</span></div>
+    <div class="t-item"><span class="sym">MINER-1</span> Extraction Payload <span class="lbl">DESIGN STAGE</span></div>
+    <div class="t-item"><span class="sym">H2O</span> Lunar Water Ice <span class="lbl">HIGH CONFIDENCE</span></div>
+    <div class="t-item"><span class="sym">SEED</span> Funding Round <span class="lbl">OPEN</span> <span class="up">$5M TARGET</span></div>
+  </div>
+</div>
+
+<section id="mission">
+  <div class="s-tag" data-n="01">Mission Overview</div>
+  <h2 class="s-title reveal">The Universe Is Full of <em>Resources.</em><br>We're Going to Get Them.</h2>
+  <div class="stats-grid reveal">
+    <div class="stat"><div class="stat-n">700+</div><div class="stat-l">Target Asteroids</div><div class="stat-d">Near-Earth objects within accessible delta-v range</div></div>
+    <div class="stat"><div class="stat-n">$700T</div><div class="stat-l">Estimated Value</div><div class="stat-d">Mineral wealth in near-Earth asteroid belt</div></div>
+    <div class="stat"><div class="stat-n">2031</div><div class="stat-l">First Return</div><div class="stat-d">Target year for first commercial ore delivery to Earth</div></div>
+    <div class="stat"><div class="stat-n">Lakeland</div><div class="stat-l">HQ Location</div><div class="stat-d">Central Florida's emerging aerospace innovation hub</div></div>
+  </div>
+  <div class="timeline">
+    <div class="t-item-c"><div class="t-dot"></div><div class="t-phase">Phase 1 · 2025</div><div class="t-head">Legal Foundation & IP Protection</div><div class="t-body">Delaware C-Corp incorporation, USPTO trademark filing, FAA commercial launch registration, and SPACE Act 2015 compliance from our Lakeland, FL headquarters. Provisional patents filed on extraction drill design and autonomous robotics systems.</div></div>
+    <div class="t-item-c"><div class="t-dot"></div><div class="t-phase">Phase 2 · 2025–2026</div><div class="t-head">Technology Development — AERO-1 Probe</div><div class="t-body">Assembly of 20-person engineering team at our Lakeland Innovation Campus. Development of AERO-1 micro-prospector with multispectral imaging and AI-driven targeting — designed and built in Central Florida.</div></div>
+    <div class="t-item-c"><div class="t-dot"></div><div class="t-phase">Phase 3 · 2026–2027</div><div class="t-head">Series A Funding — $50M Target</div><div class="t-body">Institutional funding round targeting space-focused VCs and strategic mining industry partners. NASA SBIR grant applications from our Lakeland base of operations.</div></div>
+    <div class="t-item-c"><div class="t-dot"></div><div class="t-phase">Phase 4 · 2028</div><div class="t-head">AERO-1 Scout Launch</div><div class="t-body">AERO-1 rideshare launch from Cape Canaveral — just 2.5 hours from our Lakeland HQ. 12-month survey of target M-type asteroid to confirm platinum-group metal composition before MINER-1 deployment.</div></div>
+    <div class="t-item-c"><div class="t-dot"></div><div class="t-phase">Phase 5 · 2030–2031</div><div class="t-head">MINER-1 Extraction & First Return</div><div class="t-body">Full extraction mission: zero-gravity anchoring, in-situ ore processing via electrostatic separation, and Earth-return capsule delivery of the first commercial asteroid-derived platinum-group metals to Earth.</div></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="tech">
+  <div class="s-tag" data-n="02">Technology</div>
+  <h2 class="s-title reveal">Engineering the <em>Impossible</em></h2>
+  <div class="tech-grid reveal">
+    <div class="tech-card"><span class="tech-icon">🛰️</span><div class="tech-name">AERO-1 Probe</div><div class="tech-desc">Compact 45kg autonomous scout spacecraft with multispectral and X-ray fluorescence imaging for precise mineral composition mapping from orbit.</div><div class="tech-spec">MASS: 45KG · ΔV: 4.5 KM/S · DURATION: 36 MONTHS</div></div>
+    <div class="tech-card"><span class="tech-icon">⛏️</span><div class="tech-name">MINER-1 Platform</div><div class="tech-desc">Modular extraction platform with percussive drill, regolith capture, and electrostatic + magnetic ore separator rated for continuous zero-gravity operations.</div><div class="tech-spec">DRILL DEPTH: 2M · OUTPUT: 100KG/DAY · POWER: SOLAR</div></div>
+    <div class="tech-card"><span class="tech-icon">🧠</span><div class="tech-name">AI Target Engine</div><div class="tech-desc">Proprietary machine learning pipeline trained on NASA and ESA spectral databases to rank near-Earth asteroids by extraction value and accessibility score.</div><div class="tech-spec">DATABASE: 28,000+ NEOs · ACCURACY: 94% · REALTIME</div></div>
+    <div class="tech-card"><span class="tech-icon">🌕</span><div class="tech-name">Lunar Extraction</div><div class="tech-desc">Parallel lunar program targeting polar water ice as in-space propellant and life support supply for NASA Artemis program participants.</div><div class="tech-spec">TARGET: SOUTH POLE · RESOURCE: H₂O + HE-3</div></div>
+    <div class="tech-card"><span class="tech-icon">📡</span><div class="tech-name">Ground Station</div><div class="tech-desc">Proprietary deep-space communication array at our Lakeland campus with 34-meter dish antenna for continuous mission telemetry and command uplink.</div><div class="tech-spec">LOCATION: LAKELAND, FL · BAND: X + KA · RANGE: 300M KM</div></div>
+    <div class="tech-card"><span class="tech-icon">🔬</span><div class="tech-name">Analog Test Lab</div><div class="tech-desc">500 sq ft low-gravity simulation chamber on our Lakeland Innovation Campus. Vacuum-compatible regolith beds for extraction system qualification testing.</div><div class="tech-spec">GRAVITY: 0.001G · VACUUM: 10⁻⁶ TORR · LAKELAND FL</div></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="tracker" style="background:var(--deep);">
+  <div class="s-tag" data-n="03">Live Mission Tracker</div>
+  <h2 class="s-title reveal">AERO-1 Mission Status</h2>
+  <div class="mission-panel reveal">
+    <div class="m-grid">
+      <div class="m-info">
+        <h3>Target: Asteroid 2024 BX1-F</h3>
+        <p>Near-Earth M-type asteroid with confirmed spectral signature consistent with high platinum-group metal concentration. Estimated accessible resource value: $2.3 trillion at current commodity prices.</p>
+        <div class="prog-wrap"><div class="prog-lbl"><span>Mission Development Progress</span><span>38%</span></div><div class="prog-bar"><div class="prog-fill" style="width:38%; background:linear-gradient(90deg,var(--gold),var(--gold-light))"></div></div></div>
+        <div class="prog-wrap"><div class="prog-lbl"><span>Funding Milestone</span><span>62%</span></div><div class="prog-bar"><div class="prog-fill" style="width:62%; background:linear-gradient(90deg,var(--cyan),#00ffcc)"></div></div></div>
+        <div class="prog-wrap"><div class="prog-lbl"><span>Team Buildout</span><span>55%</span></div><div class="prog-bar"><div class="prog-fill" style="width:55%; background:linear-gradient(90deg,#8855ff,var(--cyan))"></div></div></div>
+      </div>
+      <div>
+        <div class="data-row"><span class="d-lbl">Mission Status</span><span class="d-val">Pre-Launch Dev</span></div>
+        <div class="data-row"><span class="d-lbl">Target Class</span><span class="d-val">M-Type (Metallic)</span></div>
+        <div class="data-row"><span class="d-lbl">Est. Diameter</span><span class="d-val">1.2 km</span></div>
+        <div class="data-row"><span class="d-lbl">Delta-V Required</span><span class="d-val">4.2 km/s</span></div>
+        <div class="data-row"><span class="d-lbl">Transfer Window</span><span class="d-val">Oct 2028</span></div>
+        <div class="data-row"><span class="d-lbl">Primary Ore</span><span class="d-val">Pt, Pd, Rh, Ir</span></div>
+        <div class="data-row"><span class="d-lbl">Est. Return Value</span><span class="d-val" style="color:var(--gold)">$2.3T</span></div>
+        <div class="data-row"><span class="d-lbl">Launch Site</span><span class="d-val">Cape Canaveral, FL</span></div>
+        <div class="data-row"><span class="d-lbl">HQ</span><span class="d-val">Lakeland, FL · 153mi to launch</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="team">
+  <div class="s-tag" data-n="04">Leadership</div>
+  <h2 class="s-title reveal">The <em>Team</em> Behind the Mission</h2>
+  <div class="team-grid reveal">
+    <div class="team-card"><div class="t-av">👨‍🚀</div><div class="t-name">Dr. Marcus Webb</div><div class="t-role">CEO & Co-Founder</div><div class="t-bio">Former NASA JPL mission architect with 18 years in planetary science. Led the OSIRIS-REx asteroid sample analysis team. PhD Aerospace Engineering, University of Florida.</div></div>
+    <div class="team-card"><div class="t-av">👩‍🔬</div><div class="t-name">Dr. Priya Nair</div><div class="t-role">CTO & Co-Founder</div><div class="t-bio">Autonomous robotics pioneer with 12 years at MIT CSAIL. Developed zero-gravity manipulation systems for the ISS. Lakeland, FL native and proud Polk County alumni.</div></div>
+    <div class="team-card"><div class="t-av">👨‍💼</div><div class="t-name">Thomas Reaves</div><div class="t-role">CFO</div><div class="t-bio">Deep tech investment banker, 15 years at Goldman Sachs Space & Tech group. Structured $4B+ in aerospace transactions. University of South Florida alumnus.</div></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="invest" style="background:var(--deep);">
+  <div class="s-tag" data-n="05">Investor Relations</div>
+  <h2 class="s-title reveal">Join the <em>Seed Round</em></h2>
+  <div class="invest-panel reveal">
+    <div class="inv-grid">
+      <div>
+        <div class="raise-amt">$5M</div>
+        <div class="raise-lbl">Seed Round · Open 2025</div>
+        <p class="raise-desc">AstroVein is raising its seed round to fund AERO-1 development, regulatory milestones, and 18 months of operations at our Lakeland, FL innovation campus. Minimum investment: $250,000. Accredited investors only.</p>
+        <div class="inv-addr">1200 INNOVATION WAY, SUITE 300<br>LAKELAND, FLORIDA 33801<br>(863) 555-0194<br>INVEST@ASTROVEIN.COM<br>WWW.ASTROVEIN.COM</div>
+      </div>
+      <div>
+        <input class="f-input" type="text" placeholder="Full Name">
+        <input class="f-input" type="email" placeholder="Email Address">
+        <input class="f-input" type="text" placeholder="Organization / Fund">
+        <input class="f-input" type="text" placeholder="Investment Range (e.g. $500K–$1M)">
+        <textarea class="f-input" rows="3" placeholder="Message / Questions"></textarea>
+        <button class="f-btn">Request Investor Deck →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="ft-grid">
+    <div>
+      <div class="ft-logo">ASTRO<span>VEIN</span></div>
+      <div class="ft-tag">Unlocking the solar system's resources for humanity. Space-grade technology built in the heart of Central Florida.</div>
+      <div class="ft-addr">1200 INNOVATION WAY, SUITE 300<br>LAKELAND, FLORIDA 33801<br>(863) 555-0194 · CONTACT@ASTROVEIN.COM</div>
+    </div>
+    <div class="ft-col"><h4>Company</h4><ul><li><a href="#">About Us</a></li><li><a href="#">Mission</a></li><li><a href="#">Team</a></li><li><a href="#">Careers</a></li><li><a href="#">Press</a></li></ul></div>
+    <div class="ft-col"><h4>Technology</h4><ul><li><a href="#">AERO-1 Probe</a></li><li><a href="#">MINER-1 Platform</a></li><li><a href="#">AI Targeting</a></li><li><a href="#">Lunar Program</a></li><li><a href="#">Publications</a></li></ul></div>
+    <div class="ft-col"><h4>Investors</h4><ul><li><a href="#">Investor Portal</a></li><li><a href="#">Financials</a></li><li><a href="#">Term Sheet</a></li><li><a href="#">Board Updates</a></li><li><a href="#">Legal Docs</a></li></ul></div>
+  </div>
+  <div class="ft-bot">
+    <div class="ft-copy">© 2025 ASTROVEIN RESOURCES INC. · LAKELAND, FLORIDA · ALL RIGHTS RESERVED</div>
+    <div class="ft-copy">WWW.ASTROVEIN.COM</div>
+  </div>
+</footer>
+
+<script>
+const cur=document.getElementById('cur'),curR=document.getElementById('curR');
+document.addEventListener('mousemove',e=>{
+  cur.style.left=e.clientX+'px'; cur.style.top=e.clientY+'px';
+  setTimeout(()=>{curR.style.left=e.clientX+'px'; curR.style.top=e.clientY+'px';},80);
+});
+const canvas=document.getElementById('starfield'),ctx=canvas.getContext('2d');
+function resizeCanvas(){canvas.width=window.innerWidth; canvas.height=window.innerHeight;}
+resizeCanvas(); window.addEventListener('resize',resizeCanvas);
+const stars=Array.from({length:280},()=>({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*1.4,op:Math.random(),tw:Math.random()*Math.PI*2}));
+function drawStars(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  stars.forEach(s=>{s.tw+=0.018; const o=s.op*(0.5+0.5*Math.sin(s.tw)); ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2); ctx.fillStyle=`rgba(200,180,255,${o})`; ctx.fill();});
+  requestAnimationFrame(drawStars);
+}
+drawStars();
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');}});},{threshold:0.1});
+document.querySelectorAll('.reveal,.t-item-c').forEach(r=>obs.observe(r));
+</script>
+</body>
+</html>
